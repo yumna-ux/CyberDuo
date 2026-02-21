@@ -15,7 +15,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Lingo | Leaderboard",
+  title: "cyber | Leaderboard",
   description: "See where you stand among other learners in the community.",
 };
 

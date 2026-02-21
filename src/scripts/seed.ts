@@ -1,213 +1,171 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
-
 import * as schema from "../db/schema";
 
 const sql = neon(process.env.DATABASE_URL!);
-// @ts-ignore
 const db = drizzle(sql, { schema });
 
-const main = async () => {
-  try {
-    console.log("Seeding database");
+async function main() {
+  console.log("Starting CyberDuo seed...");
 
-    await db.delete(schema.courses);
-    await db.delete(schema.userProgress);
-    await db.delete(schema.units);
-    await db.delete(schema.lessons);
-    await db.delete(schema.challenges);
+  try {
+    // Clear tables in safe order
+    console.log("Clearing existing data...");
     await db.delete(schema.challengeOptions);
     await db.delete(schema.challengeProgress);
+    await db.delete(schema.challenges);
+    await db.delete(schema.lessons);
+    await db.delete(schema.units);
+    await db.delete(schema.courses);
+    await db.delete(schema.userProgress);
     await db.delete(schema.userSubscription);
 
-    await db.insert(schema.courses).values([
-      {
-        id: 1,
-        title: "Spanish",
-        imageSrc: "/es.svg",
-      },
-      {
-        id: 2,
-        title: "Italian",
-        imageSrc: "/it.svg",
-      },
-      {
-        id: 3,
-        title: "French",
-        imageSrc: "/fr.svg",
-      },
-      {
-        id: 4,
-        title: "Croatian",
-        imageSrc: "/hr.svg",
-      },
-    ]);
+    // Create one main course (simple and focused)
+    console.log("Creating course...");
+    const [course] = await db
+      .insert(schema.courses)
+      .values({
+        title: "Cybersecurity Mastery",
+        imageSrc: "/mascot.svg", // or /mascot.svg if you prefer
+      })
+      .returning({ id: schema.courses.id });
 
-    await db.insert(schema.units).values([
+    // 3 units – all have title AND description (fixes NOT NULL error)
+    console.log("Creating units...");
+    const unitData = [
       {
-        id: 1,
-        courseId: 1, // Spanish
-        title: "Unit 1",
-        description: "Learn the basics of Spanish",
+        title: "Unit 1 – Fundamentals",
+        description: "Learn the core concepts every cyber defender needs to know.",
         order: 1,
       },
-    ]);
-
-    await db.insert(schema.lessons).values([
       {
-        id: 1,
-        unitId: 1, // Unit 1 (Learn the basics...)
-        order: 1,
-        title: "Nouns",
-      },
-      {
-        id: 2,
-        unitId: 1, // Unit 1 (Learn the basics...)
+        title: "Unit 2 – Common Threats",
+        description: "Recognize and understand the most frequent cyber attacks.",
         order: 2,
-        title: "Verbs",
       },
       {
-        id: 3,
-        unitId: 1, // Unit 1 (Learn the basics...)
+        title: "Unit 3 – Strong Defense",
+        description: "Build practical skills to protect yourself and your systems.",
         order: 3,
-        title: "Verbs",
       },
-      {
-        id: 4,
-        unitId: 1, // Unit 1 (Learn the basics...)
-        order: 4,
-        title: "Verbs",
-      },
-      {
-        id: 5,
-        unitId: 1, // Unit 1 (Learn the basics...)
-        order: 5,
-        title: "Verbs",
-      },
-    ]);
+    ];
 
-    await db.insert(schema.challenges).values([
-      {
-        id: 1,
-        lessonId: 1, // Nouns
-        type: "SELECT",
-        order: 1,
-        question: 'Which one of these is the "the man"?',
-      },
-      {
-        id: 2,
-        lessonId: 1, // Nouns
-        type: "ASSIST",
-        order: 2,
-        question: '"the man"',
-      },
-      {
-        id: 3,
-        lessonId: 1, // Nouns
-        type: "SELECT",
-        order: 3,
-        question: 'Which one of these is the "the robot"?',
-      },
-    ]);
+    const unitIds: number[] = [];
 
-    await db.insert(schema.challengeOptions).values([
-      {
-        challengeId: 1, // Which one of these is "the man"?
-        imageSrc: "/man.svg",
-        correct: true,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 1,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 1,
-        imageSrc: "/robot.svg",
-        correct: false,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-    ]);
+    for (const u of unitData) {
+      const [unit] = await db
+        .insert(schema.units)
+        .values({
+          courseId: course.id,
+          title: u.title,
+          description: u.description, // ← this line fixes the error
+          order: u.order,
+        })
+        .returning({ id: schema.units.id });
 
-    await db.insert(schema.challengeOptions).values([
-      {
-        challengeId: 2, // "the man"?
-        correct: true,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 2,
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 2,
-        correct: false,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-    ]);
+      unitIds.push(unit.id);
+    }
 
-    await db.insert(schema.challengeOptions).values([
-      {
-        challengeId: 3, // Which one of these is the "the robot"?
-        imageSrc: "/man.svg",
-        correct: false,
-        text: "el hombre",
-        audioSrc: "/es_man.mp3",
-      },
-      {
-        challengeId: 3,
-        imageSrc: "/woman.svg",
-        correct: false,
-        text: "la mujer",
-        audioSrc: "/es_woman.mp3",
-      },
-      {
-        challengeId: 3,
-        imageSrc: "/robot.svg",
-        correct: true,
-        text: "el robot",
-        audioSrc: "/es_robot.mp3",
-      },
-    ]);
+    // Lessons & challenges
+    console.log("Creating lessons and challenges...");
+    let globalOrder = 1;
 
-    await db.insert(schema.challenges).values([
-      {
-        id: 4,
-        lessonId: 2, // Verbs
-        type: "SELECT",
-        order: 1,
-        question: 'Which one of these is the "the man"?',
-      },
-      {
-        id: 5,
-        lessonId: 2, // Verbs
-        type: "ASSIST",
-        order: 2,
-        question: '"the man"',
-      },
-      {
-        id: 6,
-        lessonId: 2, // Verbs
-        type: "SELECT",
-        order: 3,
-        question: 'Which one of these is the "the robot"?',
-      },
-    ]);
-    console.log("Seeding finished");
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to seed the database");
+    for (const unitId of unitIds) {
+      // 2 lessons per unit (simple but complete)
+      for (let l = 1; l <= 2; l++) {
+        const [lesson] = await db
+          .insert(schema.lessons)
+          .values({
+            unitId,
+            title: l === 1 ? "Core Concepts" : "Practical Skills",
+            order: l,
+          })
+          .returning({ id: schema.lessons.id });
+
+        // 4 challenges per lesson (2 SELECT + 2 ASSIST)
+        const challenges = [
+          {
+            type: "SELECT",
+            question: "What does CIA stand for in cybersecurity?",
+            order: globalOrder++,
+            options: [
+              { text: "Confidentiality, Integrity, Availability", correct: true },
+              { text: "Control, Internet, Access", correct: false },
+              { text: "Cloud, Information, Authentication", correct: false },
+              { text: "Cryptography, Intrusion, Attack", correct: false },
+            ],
+          },
+          {
+            type: "ASSIST",
+            question: "The practice of protecting systems from digital attacks is called",
+            order: globalOrder++,
+             options: [
+              { text: "cybersecurity", correct: true },
+              { text: "Internet break", correct: false },
+              { text: "Civil engieering", correct: false },
+              { text: "Crypto check", correct: false },
+            ],
+          },
+          {
+            type: "SELECT",
+            question: "Which password is the strongest?",
+            order: globalOrder++,
+            options: [
+              { text: "X7#kP9$mQ2vL8!", correct: true },
+              { text: "password123", correct: false },
+              { text: "1234567890", correct: false },
+              { text: "MyDog2023", correct: false },
+            ],
+          },
+          {
+            type: "ASSIST",
+            question: "Always enable this on important accounts for extra security",
+            correctAnswer: "",
+            order: globalOrder++,
+            options: [
+              { text: "flash light", correct: false },
+              { text: "darkmode", correct: false },
+              { text: "two-factor authentication", correct: true },
+            ],
+          },
+        ];
+
+        for (const ch of challenges) {
+          const [challenge] = await db
+            .insert(schema.challenges)
+            .values({
+              lessonId: lesson.id,
+              type: ch.type,
+              question: ch.question,
+              order: ch.order,
+            })
+            .returning({ id: schema.challenges.id });
+
+          if (ch.options) {
+            await db.insert(schema.challengeOptions).values(
+              ch.options.map(opt => ({
+                challengeId: challenge.id,
+                text: opt.text,
+                correct: opt.correct,
+              }))
+            );
+          } else if (ch.correctAnswer) {
+            await db.insert(schema.challengeOptions).values({
+              challengeId: challenge.id,
+              text: ch.correctAnswer,
+              correct: true,
+            });
+          }
+        }
+      }
+    }
+
+    console.log("✅ Seeding finished successfully!");
+  } catch (err) {
+    console.error("Seed failed:", err);
+    process.exit(1);
   }
-};
+}
 
 main();

@@ -11,7 +11,7 @@ import { Quests } from "@/components/quests";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Lingo | Shop",
+  title: "CyberDuo | Shop",
   description: "Spend your points on cool stuff.",
 };
 

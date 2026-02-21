@@ -1,10 +1,8 @@
-# 📃 Duolingo Clone: Learn Languages with Fun!
+# 📃 CyberDuo Clone: Learn Languages with Fun!
 
-![Alt text](https://lingo.mohnd-code.com/hero.svg)
 
-This project is a full-fledged Duolingo clone built with Next.js, Drizzle for data management, PostgresQL as the database, and Neon for serverless deployment. It provides a gamified and engaging platform for users to learn languages effectively.
+This project is a full-fledged CyberDuo  built with Next.js, Drizzle for data management, PostgresQL as the database, and Neon for serverless deployment. It provides a gamified and engaging platform for users to learn cybersecurity effectively.
 
-- https://lingo.mohnd-code.com/
 
 ## 💻 Technologies Used:
 
@@ -61,13 +59,13 @@ Before you begin, ensure you have the following software installed on your local
 1. Clone the Repository:
 
 ```bash
-git clone https://github.com/mohannadofficial/duolingo-nextjs.git
+git clone https://github.com/mohannadofficial/cyberduo-nextjs.git
 ```
 
 2. Install Dependencies:
 
 ```bash
-cd duolingo-nextjs
+cd cyberduo-nextjs
 npm install
 ```
 
@@ -104,14 +102,14 @@ NEXT_PUBLIC_APP_URL=your_app_url (optional for custom frontend URL)
 ## 🚀 Deployment on Vercel
 
 1. Create a Vercel Account: Sign up for a free Vercel account at (https://vercel.com/).
-2. Connect your GitHub Repository: Link your GitHub repository containing the Duolingo clone project to your Vercel account.
+2. Connect your GitHub Repository: Link your GitHub repository containing the cyberduo project to your Vercel account.
 3. Import Project: Vercel will automatically detect your Next.js project and provide deployment options.
 4. Configure Environment Variables: Set the required environment variables (listed in the Setup Instructions section) within Vercel's environment settings.
 5. Deploy: Once configured, deploy your project to Vercel. Vercel will handle building and deploying the application.
 
 ## ⭐ Like this project?
 
-If you find this Duolingo clone project helpful, consider giving it a star on GitHub to show your support! This helps others discover the project and motivates me to continue development.
+If you find this cyberDuo  project helpful, consider giving it a star on GitHub to show your support! This helps others discover the project and motivates me to continue development.
 
 ## 🙌 Contributing
 

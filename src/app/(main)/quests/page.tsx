@@ -12,7 +12,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Lingo | Quests",
+  title: "cyber | Quests",
   description: "Complete quests by earning points.",
 };
 

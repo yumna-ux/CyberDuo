@@ -17,9 +17,9 @@ import { Quests } from "@/components/quests";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Lingo | Learn",
+  title: "cyber | Learn",
   description:
-    "Learn a new language with Lingo. Choose from a variety of languages and start learning today.",
+    "Learn about cybersecurity. Choose the very eeasy way and start learning today.",
 };
 
 const LearnPage = async () => {
