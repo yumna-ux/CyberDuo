@@ -1,4 +1,4 @@
-# 📃 CyberDuo Clone: Learn Languages with Fun!
+# 📃 CyberDuo : Learn cyberwith Fun!
 
 
 This project is a full-fledged CyberDuo  built with Next.js, Drizzle for data management, PostgresQL as the database, and Neon for serverless deployment. It provides a gamified and engaging platform for users to learn cybersecurity effectively.
@@ -59,13 +59,13 @@ Before you begin, ensure you have the following software installed on your local
 1. Clone the Repository:
 
 ```bash
-git clone https://github.com/mohannadofficial/cyberduo-nextjs.git
+git clone https://github.com/yumna-ux/CyberDuo-nextjs.git
 ```
 
 2. Install Dependencies:
 
 ```bash
-cd cyberduo-nextjs
+cd CyberDuo-nextjs
 npm install
 ```
 
