@@ -1,4 +1,4 @@
-# 📃 CyberDuo Clone: Learn Languages with Fun!
+# 📃 CyberDuo : Learn cyberwith Fun!
 
 
 This project is a full-fledged CyberDuo  built with Next.js, Drizzle for data management, PostgresQL as the database, and Neon for serverless deployment. It provides a gamified and engaging platform for users to learn cybersecurity effectively.
@@ -42,30 +42,20 @@ Before you begin, ensure you have the following software installed on your local
 - Node.js and npm (or yarn): Used for managing project dependencies. Download from (https://nodejs.org/en)
 - Git (optional): For version control. Download from (https://git-scm.com/downloads)
 
-## 🤖 Commands
 
-- `dev`: Starts the development server `npm run dev`.
-- `build`: Creates an optimized production build npm `npm run build`.
-- `start`: Runs the production server `npm run start`.
-- `lint`: Lints the codebase for potential errors and style issues `npm run lint`.
-- `db:studio`: Opens the Drizzle Kit Studio for database management `npx drizzle-kit studio`.
-- `db:push`: Migrates the database schema to Postgres `npx drizzle-kit push:pg`.
-- `db:seed`: Seeds the database with initial data `tsx ./src/scripts/seed.ts`.
-- `db:reset`: Resets the database schema `tsx ./src/scripts/reset.ts`.
-- `db:prod`: Runs database migrations for the production environment `tsx ./src/scripts/prod.ts`.
 
 ## 🛠️ Installation
 
 1. Clone the Repository:
 
 ```bash
-git clone https://github.com/mohannadofficial/cyberduo-nextjs.git
+git clone https://github.com/yumna-ux/CyberDuo-nextjs.git
 ```
 
 2. Install Dependencies:
 
 ```bash
-cd cyberduo-nextjs
+cd CyberDuo-nextjs
 npm install
 ```
 
@@ -121,4 +111,4 @@ This project is licensed under the MIT License
 
 ## 📬 Feedback
 
-If you have any feedback, please reach out to us at info@mohnd-info.com
+If you have any feedback, please reach out to us at YumnaMohammedNursema1@gmail.com 
