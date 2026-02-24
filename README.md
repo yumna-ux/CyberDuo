@@ -1,6 +1,6 @@
 # CyberDuo 🛡️
 
-**A gamified cybersecurity learning platform** built with modern web technologies. Think Duolingo, but for real-world digital defense skills.
+**A gamified cybersecurity learning platform** built with modern web technologies.  but for real-world digital security skills.
 
 Learn to defend against phishing, build unbreakable passwords, secure networks, understand encryption, and protect against social engineering — all through bite-sized, engaging lessons with points, shields, leaderboards, and certificates.
 
@@ -66,7 +66,6 @@ NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 CLERK_SECRET_KEY
 DATABASE_URL
 Deploy — Vercel will handle everything automatically.
-Live URL: [Add your Vercel link here after deployment]
 
 ## ⭐ Show Your Support
 If you like this project, please give it a ⭐ on GitHub!
