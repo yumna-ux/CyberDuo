@@ -4,7 +4,7 @@
 
 Learn to defend against phishing, build unbreakable passwords, secure networks, understand encryption, and protect against social engineering — all through bite-sized, engaging lessons with points, shields, leaderboards, and certificates.
 
-**Live Demo**: [https://your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)  
+**Live Demo**: [https://cyber-duo.vercel.app](https://cyber-duo.vercel.app)  
 *(Replace with your actual Vercel link after deployment)*
 
 ## ✨ Key Features
@@ -51,7 +51,7 @@ npx tsx src/scripts/seed.ts
 # 6. Run the app
 npm run dev
 Open http://localhost:3000 and start learning!
-
+```
 ## 📋 Setup Requirements
 Node.js 18+
 Clerk account (for authentication)
