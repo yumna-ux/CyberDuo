@@ -10,7 +10,7 @@ async function main() {
   console.log("Starting CyberDuo seed...");
 
   try {
-    // Clear tables in safe order
+    // Clear everything
     await db.delete(schema.challengeOptions);
     await db.delete(schema.challengeProgress);
     await db.delete(schema.challenges);
@@ -20,7 +20,7 @@ async function main() {
     await db.delete(schema.userProgress);
     await db.delete(schema.userSubscription);
 
-    // Create main course
+    // Create course
     const [course] = await db
       .insert(schema.courses)
       .values({
@@ -54,7 +54,6 @@ async function main() {
       unitIds.push(unit.id);
     }
 
-    // Lessons & challenges – unique questions per unit, only SELECT type
     let orderCounter = 1;
 
     for (let unitIndex = 0; unitIndex < unitIds.length; unitIndex++) {
@@ -69,8 +68,8 @@ async function main() {
         })
         .returning({ id: schema.lessons.id });
 
-      // 4 unique SELECT challenges per lesson
-      const challenges = getUnitChallenges(unitIndex + 1, orderCounter);  // pass unit number (1 to 5)
+      // 4 SELECT challenges – unique per unit
+      const challenges = getUnitChallenges(unitIndex + 1, orderCounter);
       orderCounter += challenges.length;
 
       for (const c of challenges) {
@@ -78,7 +77,7 @@ async function main() {
           .insert(schema.challenges)
           .values({
             lessonId: lesson.id,
-            type: c.type,
+            type: "SELECT",
             question: c.question,
             order: c.order,
           })
@@ -101,255 +100,143 @@ async function main() {
   }
 }
 
-// Generate 4 unique SELECT challenges for each unit (unitNum = 1 to 5)
-function getUnitChallenges(unitNum: number, startOrder: number) {
+function getUnitChallenges(unitNumber: number, startOrder: number) {
   const challenges = [];
 
-  if (unitNum === 1) { // Unit 1: Security Fundamentals
+  if (unitNumber === 1) {
     challenges.push(
-      {
-        type: "SELECT",
-        question: "What does the 'C' in CIA triad stand for?",
-        order: startOrder,
-        options: [
-          { text: "Confidentiality", correct: true },
-          { text: "Connection", correct: false },
-          { text: "Control", correct: false },
-          { text: "Cryptography", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "Which principle ensures data is not altered without authorization?",
-        order: startOrder + 1,
-        options: [
-          { text: "Integrity", correct: true },
-          { text: "Availability", correct: false },
-          { text: "Confidentiality", correct: false },
-          { text: "Authentication", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "What does 'Availability' in CIA triad mean?",
-        order: startOrder + 2,
-        options: [
-          
-          { text: "Data is hidden from unauthorized users", correct: false },
-          { text: "Data remains unchanged", correct: false },
-          { text: "Data and systems are accessible when needed", correct: true },
-          { text: "Data is encrypted", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "Which of these is NOT part of the CIA triad?",
-        order: startOrder + 3,
-        options: [
-          { text: "Confidentiality", correct: false },
-          { text: "Creativity", correct: true },
-          { text: "Integrity", correct: false },
-          { text: "Availability", correct: false },
-        ],
-      }
+      { question: "What does the 'C' in CIA triad stand for?", order: startOrder, options: [
+        { text: "Confidentiality", correct: true },
+        { text: "Connection", correct: false },
+        { text: "Control", correct: false },
+        { text: "Cryptography", correct: false },
+      ]},
+      { question: "Which ensures data is not altered without authorization?", order: startOrder + 1, options: [
+        { text: "Integrity", correct: true },
+        { text: "Availability", correct: false },
+        { text: "Confidentiality", correct: false },
+        { text: "Authentication", correct: false },
+      ]},
+      { question: "What does 'Availability' mean?", order: startOrder + 2, options: [
+        { text: "Data and systems are accessible when needed", correct: true },
+        { text: "Data is hidden", correct: false },
+        { text: "Data is encrypted", correct: false },
+        { text: "Data is deleted", correct: false },
+      ]},
+      { question: "Which is NOT part of the CIA triad?", order: startOrder + 3, options: [
+        { text: "Creativity", correct: true },
+        { text: "Confidentiality", correct: false },
+        { text: "Integrity", correct: false },
+        { text: "Availability", correct: false },
+      ]},
     );
-  } else if (unitNum === 2) { // Unit 2: Phishing & Social Engineering
+  } else if (unitNumber === 2) {
     challenges.push(
-      {
-        type: "SELECT",
-        question: "What is phishing?",
-        order: startOrder,
-        options: [
-         
-          { text: "A method to encrypt data", correct: false },
-          { text: "A firewall configuration", correct: false },
-          { text: "An attack that tricks users into revealing sensitive information", correct: true },
-          { text: "A software update process", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "Which is a common sign of a phishing email?",
-        order: startOrder + 1,
-        options: [
-          
-          { text: "Perfect grammar and company logo", correct: false },
-          { text: "Urgent language and threats", correct: true },
-          { text: "Sent from a known friend", correct: false },
-          { text: "No links or attachments", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "What should you do with a suspicious email?",
-        order: startOrder + 2,
-        options: [
-          { text: "Verify using official contact methods", correct: true },
-          { text: "Click the link to check", correct: false },
-          { text: "Reply with your password", correct: false },
-          { text: "Forward to all contacts", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "Phishing that targets specific people is called?",
-        order: startOrder + 3,
-        options: [
-          { text: "Spear phishing", correct: true },
-          { text: "Mass phishing", correct: false },
-          { text: "Random phishing", correct: false },
-          { text: "Bulk phishing", correct: false },
-        ],
-      }
+      { question: "What is phishing?", order: startOrder, options: [
+        { text: "Tricking users into giving sensitive information", correct: true },
+        { text: "Encrypting emails", correct: false },
+        { text: "Firewall setup", correct: false },
+        { text: "Browser update", correct: false },
+      ]},
+      { question: "Common sign of phishing email?", order: startOrder + 1, options: [
+        { text: "Urgent threats", correct: true },
+        { text: "Perfect grammar", correct: false },
+        { text: "From friend", correct: false },
+        { text: "No links", correct: false },
+      ]},
+      { question: "Best action for suspicious email?", order: startOrder + 2, options: [
+        { text: "Verify official way", correct: true },
+        { text: "Click link", correct: false },
+        { text: "Reply password", correct: false },
+        { text: "Forward", correct: false },
+      ]},
+      { question: "Targeted phishing is called?", order: startOrder + 3, options: [
+        { text: "Spear phishing", correct: true },
+        { text: "Mass phishing", correct: false },
+        { text: "Random phishing", correct: false },
+        { text: "Bulk phishing", correct: false },
+      ]},
     );
-  } else if (unitNum === 3) { // Unit 3: Passwords & Authentication
+  } else if (unitNumber === 3) {
     challenges.push(
-      {
-        type: "SELECT",
-        question: "Which is the strongest password?",
-        order: startOrder,
-        options: [
-          
-          { text: "password123", correct: false },
-          { text: "1234567890", correct: false },
-          { text: "MyDog2023", correct: false },
-          { text: "X7#kP9$mQ2vL8!", correct: true },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "What is the recommended minimum password length?",
-        order: startOrder + 1,
-        options: [
-          
-          { text: "6 characters", correct: false },
-          { text: "8 characters exactly", correct: false },
-          { text: "4 characters", correct: false },
-          { text: "12 characters or more", correct: true },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "What should you enable on all important accounts?",
-        order: startOrder + 2,
-        options: [
-          { text: "Two-factor authentication (2FA)", correct: true },
-          { text: "Automatic login", correct: false },
-          { text: "Password sharing", correct: false },
-          { text: "Single sign-on only", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "Why should you never reuse passwords?",
-        order: startOrder + 3,
-        options: [
-          
-          { text: "It makes login faster", correct: false },
-          { text: "One breach can compromise multiple accounts", correct: true },
-          { text: "It saves memory", correct: false },
-          { text: "It is more secure", correct: false },
-        ],
-      }
+      { question: "Strongest password?", order: startOrder, options: [
+        { text: "X7#kP9$mQ2vL8!", correct: true },
+        { text: "password123", correct: false },
+        { text: "1234567890", correct: false },
+        { text: "MyDog2023", correct: false },
+      ]},
+      { question: "Minimum strong password length?", order: startOrder + 1, options: [
+        { text: "12+ characters", correct: true },
+        { text: "6 characters", correct: false },
+        { text: "8 exactly", correct: false },
+        { text: "4 characters", correct: false },
+      ]},
+      { question: "Enable this on accounts?", order: startOrder + 2, options: [
+        { text: "Two-factor authentication", correct: true },
+        { text: "Auto login", correct: false },
+        { text: "Share passwords", correct: false },
+        { text: "Single sign-on", correct: false },
+      ]},
+      { question: "Why never reuse passwords?", order: startOrder + 3, options: [
+        { text: "One breach hits many accounts", correct: true },
+        { text: "Faster login", correct: false },
+        { text: "Saves memory", correct: false },
+        { text: "More secure", correct: false },
+      ]},
     );
-  } else if (unitNum === 4) { // Unit 4: Network & Wi-Fi Security
+  } else if (unitNumber === 4) {
     challenges.push(
-      {
-        type: "SELECT",
-        question: "What is the safest Wi-Fi encryption today?",
-        order: startOrder,
-        options: [
-          
-          { text: "WEP", correct: false },
-          { text: "Open network", correct: false },
-          { text: "WPA", correct: false },
-          { text: "WPA3", correct: true },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "What does a VPN primarily do?",
-        order: startOrder + 1,
-        options: [
-          { text: "Encrypts your internet traffic", correct: true },
-          { text: "Speeds up your connection", correct: false },
-          { text: "Blocks all websites", correct: false },
-          { text: "Installs antivirus", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "Why avoid public Wi-Fi without protection?",
-        order: startOrder + 2,
-        options: [
-          
-          { text: "It is always faster", correct: false },
-          { text: "It uses less battery", correct: false },
-          { text: "Attackers can intercept your data", correct: true },
-          { text: "It is more secure", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "What should you do before using public Wi-Fi?",
-        order: startOrder + 3,
-        options: [
-          
-          { text: "Turn off firewall", correct: false },
-          { text: "Share files openly", correct: false },
-          { text: "Disable antivirus", correct: false },
-          { text: "Use a VPN", correct: true },
-        ],
-      }
+      { question: "Safest Wi-Fi encryption?", order: startOrder, options: [
+        { text: "WPA3", correct: true },
+        { text: "WEP", correct: false },
+        { text: "Open network", correct: false },
+        { text: "WPA", correct: false },
+      ]},
+      { question: "VPN main purpose?", order: startOrder + 1, options: [
+        { text: "Encrypts traffic", correct: true },
+        { text: "Speeds up", correct: false },
+        { text: "Blocks sites", correct: false },
+        { text: "Installs AV", correct: false },
+      ]},
+      { question: "Danger of public Wi-Fi?", order: startOrder + 2, options: [
+        { text: "Data interception", correct: true },
+        { text: "Faster", correct: false },
+        { text: "Less battery", correct: false },
+        { text: "More secure", correct: false },
+      ]},
+      { question: "Before public Wi-Fi do what?", order: startOrder + 3, options: [
+        { text: "Use VPN", correct: true },
+        { text: "Disable firewall", correct: false },
+        { text: "Share files", correct: false },
+        { text: "Disable AV", correct: false },
+      ]},
     );
-  } else if (unitNum === 5) { // Unit 5: Final Challenge & Certificate
+  } else { // Unit 5
     challenges.push(
-      {
-        type: "SELECT",
-        question: "What is the most important security habit?",
-        order: startOrder,
-        options: [
-          
-          { text: "Sharing passwords with friends", correct: false },
-          { text: "Clicking unknown links", correct: false },
-          { text: "Using strong passwords and 2FA everywhere", correct: true },
-          { text: "Disabling antivirus", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "What should you do after finishing this course?",
-        order: startOrder + 1,
-        options: [
-          
-          { text: "Forget everything", correct: false },
-          { text: "Share passwords", correct: false },
-          { text: "Apply the knowledge in daily life", correct: true },
-          { text: "Disable security features", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "Which habit greatly reduces risk?",
-        order: startOrder + 2,
-        options: [
-          { text: "Verifying suspicious messages before acting", correct: true },
-          { text: "Clicking all links quickly", correct: false },
-          { text: "Reusing passwords", correct: false },
-          { text: "Ignoring updates", correct: false },
-        ],
-      },
-      {
-        type: "SELECT",
-        question: "You have earned your CyberDuo",
-        order: startOrder + 3,
-        options: [
-          { text: "Certificate", correct: true },
-          { text: "Penalty", correct: false },
-          { text: "Warning", correct: false },
-          { text: "Ban", correct: false },
-        ],
-      }
+      { question: "Most important security habit?", order: startOrder, options: [
+        { text: "Strong passwords + 2FA", correct: true },
+        { text: "Share passwords", correct: false },
+        { text: "Click unknown links", correct: false },
+        { text: "Disable AV", correct: false },
+      ]},
+      { question: "After course do what?", order: startOrder + 1, options: [
+        { text: "Apply daily", correct: true },
+        { text: "Forget it", correct: false },
+        { text: "Share passwords", correct: false },
+        { text: "Disable features", correct: false },
+      ]},
+      { question: "Best risk reduction?", order: startOrder + 2, options: [
+        { text: "Verify messages", correct: true },
+        { text: "Click fast", correct: false },
+        { text: "Reuse passwords", correct: false },
+        { text: "Ignore updates", correct: false },
+      ]},
+      { question: "You earned your CyberDuo", order: startOrder + 3, options: [
+        { text: "Certificate", correct: true },
+        { text: "Penalty", correct: false },
+        { text: "Warning", correct: false },
+        { text: "Ban", correct: false },
+      ]},
     );
   }
 
