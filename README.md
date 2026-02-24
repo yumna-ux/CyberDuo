@@ -51,12 +51,14 @@ npx tsx src/scripts/seed.ts
 # 6. Run the app
 npm run dev
 Open http://localhost:3000 and start learning!
-📋 Setup Requirements
+
+## 📋 Setup Requirements
 Node.js 18+
 Clerk account (for authentication)
 Neon account (free Postgres database)
 (Optional) Stripe account for Pro features
-🚀 Deployment (Vercel)
+
+## 🚀 Deployment (Vercel)
 The project is already configured for one-click deployment on Vercel.
 Connect your GitHub repo to Vercel
 Add the following Environment Variables in Vercel dashboard:
@@ -65,17 +67,19 @@ CLERK_SECRET_KEY
 DATABASE_URL
 Deploy — Vercel will handle everything automatically.
 Live URL: [Add your Vercel link here after deployment]
-⭐ Show Your Support
+
+## ⭐ Show Your Support
 If you like this project, please give it a ⭐ on GitHub!
 It helps other developers discover it and motivates me to keep improving it.
-🙌 Contributing
+
+## 🙌 Contributing
 Contributions are welcome! Feel free to:
 Open issues for bugs or feature requests
 Submit pull requests for improvements
 Suggest new cybersecurity lessons or challenges
-📬 Contact / Feedback
+
+## 📬  Contact / Feedback
 Yumna Mohammed
 Email: YumnaMohammedNursema1@gmail.com
-GitHub: @yumna-ux
 Made with passion in Addis Ababa, Ethiopia ❤️
 Thank you for checking out CyberDuo
