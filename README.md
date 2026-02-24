@@ -7,9 +7,6 @@ Learn to defend against phishing, build unbreakable passwords, secure networks, 
 **Live Demo**: [https://your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)  
 *(Replace with your actual Vercel link after deployment)*
 
-![CyberDuo Screenshot](https://via.placeholder.com/800x400/0A0A0A/00FF41?text=CyberDuo+Screenshot)  
-*(Add actual screenshots here later for better impact)*
-
 ## ✨ Key Features
 
 - 5 focused cybersecurity courses with progressive difficulty
